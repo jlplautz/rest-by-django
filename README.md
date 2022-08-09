@@ -1,5 +1,5 @@
 # rest-by-django
-# rest-by-django This project is based on Python Pro course. The instructor is Walison  
+  rest-by-django This project is based on Python Pro course. The instructor is Walison  
 
 
 # Commands executed by terminal   
