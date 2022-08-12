@@ -17,4 +17,3 @@ poetry init -n
  source /home/plautz/VSCProjects/rest-by-django/.venv/bin/activate
  poetry check
  poetry env list
-
