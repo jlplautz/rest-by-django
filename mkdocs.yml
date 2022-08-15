@@ -5,7 +5,8 @@ theme:
 
 nav:
   - Home: index.md
-  - Sobre: sobre.md
-  - Contribuições:
-     - Eventos: contribuir/eventos.md
-     - Tradução: contribuir/traducao.md 
+  - About: about.md
+  - Project_Structure:
+     - Virtual Environment: Project_Structure/eventos.md
+     - Virtual Environment: Project_Structure/getting_started.md
+     - Tradução: Project_Structure/traducao.md 
