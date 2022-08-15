@@ -1,4 +1,4 @@
-# Sobre
+# About
 
 Este projeto *rest-by-django* desenvolvido com orientação do prof. Walison Filipe da Python-Pro
 
