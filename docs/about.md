@@ -6,7 +6,7 @@ A orientação do projeto esta baseado em um teste da Olist
 
 
 
-rk at Olist
+Work at Olist
 
 Olist is a company that offers an integration platform for sellers and marketplaces allowing them to sell their products across multiple channels.
 
