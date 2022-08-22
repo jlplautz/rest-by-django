@@ -12,7 +12,7 @@ git init
 git remote -v    
 git checkout -b 1    
 poetry init -n
-
+ 
 # Commands executed by terminal do VSC 
  source /home/plautz/VSCProjects/rest-by-django/.venv/bin/activate
  poetry check
