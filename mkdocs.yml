@@ -9,4 +9,4 @@ nav:
   - Project_Structure:
      - Virtual Environment: Project_Structure/eventos.md
      - Virtual Environment: Project_Structure/getting_started.md
-     - Tradução: Project_Structure/traducao.md 
+     - Tests: Project_Structure/tests.md 
