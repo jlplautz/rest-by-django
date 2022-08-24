@@ -11,7 +11,10 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
 ## Project layout
 
-    mkdocs.yml    # The configuration file.
+    mkdocs.yml      # The configuration file.
     docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+        index.md    # The documentation homepage.
+        about.md    # Our project is based on a problem used to evaluate
+                      candidate skills from Olist Company.
+        
+        first_steps # The list of the initial commands to start the project
