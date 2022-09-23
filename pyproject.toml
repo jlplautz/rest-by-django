@@ -21,7 +21,8 @@ python_files = [
 ]
 minversion = "6.0"
 addopts = "-ra -q -v"
-testpaths = ["core/tests",]
+# testpaths = ["core/tests",]
+DJANGO_SETTINGS_MODULE = "pyprg.settings"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

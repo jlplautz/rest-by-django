@@ -11,7 +11,7 @@ class Author(models.Model):
         return self.name
 
     def to_dict(self):
-        # para object se representar com um dicionario
+        # para transforma o object Author em um dicionario
         return {
             'id': self.id,
             'name': self.name

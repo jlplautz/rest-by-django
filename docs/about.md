@@ -40,17 +40,19 @@ Specification
 You should implement an application for a library to store book and authors data.
 
 This application must provide an HTTP REST API to attend the requirements.
-1. Receive a CSV with authors and import to database
+
+## 1. Receive a CSV with authors and import to database
 
 Given a CSV file with many authors (more than a million), you need to build a command to import the data into the database. The CSV file will have the following format:
 
 name
-Luciano Ramalho
-Osvaldo Santana Neto
-David Beazley
-Chetan Giridhar
-Brian K. Jones
-J.K Rowling
+
+    Luciano Ramalho
+    Osvaldo Santana Neto
+    David Beazley
+    Chetan Giridhar
+    Brian K. Jones
+    J.K Rowling
 
 Each author record in the database must have the following fields:
 
@@ -63,10 +65,12 @@ Extra tip: If you use Django Framework you can do something like this...
 
 python manage.py import_authors authors.csv
 
-2. Expose authors' data in an endpoint
+
+## 2. Expose authors' data in an endpoint
 
 This endpoint needs to return a paginated list with the authors' data. Optionally the authors can be searched by name.
-3. CRUD (Create, Read, Update and Delete) of books
+
+## 3. CRUD (Create, Read, Update and Delete) of books
 
 You need to implement these actions in your API:
 
@@ -132,4 +136,4 @@ Recommendations
     Be aware when modeling the database;
     Be careful with REST API details. They can bite you!
 
-Have fun!
+## Have fun!

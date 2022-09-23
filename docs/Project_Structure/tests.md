@@ -38,8 +38,23 @@
       - Num_de_pagina
    - No teste vamos criar 10 authors, com objects.bulk_create
    - vamos fazer o teste com a segunda pagina com os 5 ultimos registros, se o nome dentro da lista esta corretos
-   - Boa pratica. Para garantir uma paginação consistente os queryset devem ser ordenados. Portanto vamos definir um Class Meta no modelo (deixando ordenado poelo name)
+   - Boa pratica. Para garantir uma paginação consistente os queryset devem ser ordenados. Portanto vamos definir um Class Meta no modelo (deixando ordenado pelo name)
    - teste para  verificar o numero de paginas.
+   
    ```  assert response.json()['num_pages'] == 2 ```
 
    - com estes testes podemos garantir que o endpoint da apĺicação esta funcionando
+
+
+#### Quarto teste 😀 fazer buscar do author pelo nome
+
+   - Criar dois autores e esperar que somente o registro com o nome sugerido na busca seja retornado
+   - na views.py precisa implementar
+
+         name = request.GET.get('name')
+
+         queryset = Author.objects.all()
+         if name:
+            queryset = queryset.filter(name__icontains=name)
+
+         paginator = Paginator(queryset, per_page=page_size)
