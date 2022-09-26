@@ -22,6 +22,7 @@ def authors(request):
     return JsonResponse({
         'data': [a.to_dict() for a in page.object_list],
         'count': paginator.count,
-        'current_page': page_number,
+        # se não transformar pata int vai aparecer como char
+        'current_page': int(page_number),
         'num_pages': paginator.num_pages
     })

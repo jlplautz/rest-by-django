@@ -7,7 +7,7 @@ from pyprg.core.models import Author
 pytestmark = pytest.mark.django_db
 list_authors_url = resolve_url('core:list-authors')
 
-@pytest.mark.django_db
+
 def test_list_all_author(client):
     Author.objects.bulk_create(Author(name=f'Author {i}') for i in range(10))
 
@@ -24,22 +24,20 @@ def test_list_all_author(client):
     assert [a['name'] for a in response.json()['data']] == [f'Author {i}' for i in range(5, 10)]
 
 
-@pytest.mark.django_db
 def test_search_author_by_name(client):
     author1 = Author.objects.create(name='J.K Rowling')
     Author.objects.create(name='David Beazley')
 
-    response = client.get(resolve_url('core:list-authors'), data={'q': 'rowling'})
+    response = client.get(list_authors_url, data={'q': 'rowling'})
 
     assert response.status_code == HTTPStatus.OK
     assert response.json()['data'] == [{'id': author1.id, 'name': 'J.K Rowling'}]
 
 
-@pytest.mark.django_db
 def test_search_author_by_name_without_match(client):
     Author.objects.create(name='David Beazley')
 
-    response = client.get(resolve_url('core:list-authors'), data={'q': 'no match'})
+    response = client.get(list_authors_url, data={'q': 'no match'})
 
     assert response.status_code == HTTPStatus.OK
     # como resposta do no match vamos ter uma lista vazia
