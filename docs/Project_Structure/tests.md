@@ -58,3 +58,16 @@
             queryset = queryset.filter(name__icontains=name)
 
          paginator = Paginator(queryset, per_page=page_size)
+
+   - O pytest tem um marcador que marca tudo, dispensando o uso do    
+   DECORADOR para marcar os testes
+     ``` pytestmark = pytest.mark.django_db ```
+
+   Portanto todos os testes neste modulos serão marcados com django_db
+
+   - Um ponto importante que o Django cria um banco de dados temporário para cada teste.
+
+   - fazer os teste via url. para ver se esta funcional
+     - http://127.0.0.1:8000/api/authors/?page_size=2
+     - http://127.0.0.1:8000/api/authors/?page_size=2&page=3
+     - http://127.0.0.1:8000/api/authors/?q=Luciano
