@@ -7,6 +7,8 @@ nav:
   - Home: index.md
   - About: about.md
   - Project_Structure:
+     - Command: Project_Structure/command.md 
      - Virtual Environment: Project_Structure/eventos.md
      - Virtual Environment: Project_Structure/getting_started.md
-     - Tests: Project_Structure/tests.md 
+     - Tests: Project_Structure/tests.md
+    
