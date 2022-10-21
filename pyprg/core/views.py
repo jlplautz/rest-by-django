@@ -1,5 +1,6 @@
 import json
 from http import HTTPStatus
+from django.db.models import Q
 
 # from unicodedata import name
 from django.core.paginator import Paginator
@@ -23,13 +24,18 @@ def authors(request):
     paginator = Paginator(queryset, per_page=page_size)
     page = paginator.get_page(page_number)
 
-    return JsonResponse({
-        'data': [a.to_dict() for a in page.object_list],
-        'count': paginator.count,
-        # se não transformar pata int vai aparecer como char
-        'current_page': int(page_number),
-        'num_pages': paginator.num_pages
-    })
+    return JsonResponse(page2dict(page))
+
+
+def page2dict(page):
+    # vai recebe a pagina e transformar em um dict
+    return {
+        'data': [obj.to_dict() for obj in page],
+        'count': page.paginator.count,
+        # se não transformar para int vai aparecer como char
+        'current_page': page.number,
+        'num_pages': page.paginator.num_pages
+    }
 
 
 def book_list_create(request):
@@ -49,14 +55,35 @@ def book_list_create(request):
         response = JsonResponse(book.to_dict(), status=HTTPStatus.CREATED)
         # informamos a localização do recurso criado
         response['Location'] = resolve_url(book)
+        return response
     else:
-        books = Book.objects.all()
-        data = [b.to_dict() for b in books]
+        # pegar a pagina e tamanho da pagiba que foi solicitado
+        page_number = request.GET.get('page', 1)
+        page_size = request.GET.get('page_size', DEFAULT_PAGE_SIZE)
+
+        filters = Q()
+
+        # filtro com parametro 'publication_year'
+        # caso o publication_year seja passado na url podemos fazer o filtro
+        # abaixo um operator novo no python walrus -> podemos atribuir o valor a uma varialvel
+        # e retornar este valor na mesma expressão
+        if publication_year := request.GET.get('publication_year'):
+            filters |= Q(publication_year=publication_year)
+
+        # filtro para author
+        if author_id := request.GET.get('author'):
+            filters |= Q(authors=author_id)
+
+        queryset = Book.objects.filter(filters).order_by('name')
+
+        # fazemos a paginação do queryset, aplicando o limite do offset
+        paginator = Paginator(queryset, per_page=page_size)
+        page = paginator.get_page(page_number)
+        # serialização da resposta
+        return JsonResponse(page2dict(page))
+
         # JsonResponse por padrão só aceita dicionario e estavamos passando uma lista
         # return JsonResponse(data) e portanto pelo que colocar safe=False
-        return JsonResponse(data, safe=False)
-
-    return response
 
 
 def book_read_update_delete(request, pk):

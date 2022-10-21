@@ -169,4 +169,90 @@
    - precisa ter pelo meno um livro criado
    - iniciamos trazendo todos os livros, muito embora fica dificil caso existe muitos
    - Correto seria paginar
+   - inserido na view -> book_list_create(request):
+
+           # pegar a pagina e tamanho da pagiba que foi solicitado
+           page_number = request.GET.get('page', 1)
+           page_size = request.GET.get('page_size', DEFAULT_PAGE_SIZE)
+           
+           queryset = Book.objects.all()
+           # fazemos a paginação do queryset, aplicando o limite do offset
+           paginator = Paginator(queryset, per_page=page_size)
+           page = paginator.get_page(page_number)
+           # serialização da resposta
+           return JsonResponse({
+                 'data': [obj.to_dict() for obj in page.object_list],
+                 'count': paginator.count,
+                 # se não transformar para int vai aparecer como char
+                 'current_page': int(page_number),
+                 'num_pages': paginator.num_pages
+           })
+
+   - no test foi inserido -> response.json()['data']
    
+         assert response.json()['data'] == [book.to_dict()]
+
+   - Podemos ordenar os book no modelo ou na solicitação (queryset)
+     - queryset = Book.objects.order_by('name')
+   - mas seria ainda melhor fazer a ordenação no modelo
+
+         class Meta:
+            ordering = ('name')
+
+
+#### Refaturado. Criado a função page2dict
+   - criado a função page2dict que recebe uma pagina e serializaçã a informação para um dict
+
+      def page2dict(page):
+         # vai recebe a pagina e transformar em um dict
+         return {
+            'data': [obj.to_dict() for obj in page],
+            'count': page.paginator.count,
+           # se não transformar para int vai aparecer como char
+           'current_page': page.number,
+           'num_pages': page.paginator.num_pages
+         }
+
+
+#### Test filtro pelo ano de publicação do livro
+   - na função book_list_create depois do else:
+   - inserimos a variavel publication_year = rquest.GET.get('publication_year') 
+   - aplicamos o filtro na queryset
+
+        if publication_year:
+            queryset = queryset.filter(publication_year=publication_year)
+
+   - criamos mais um livro no teste
+
+         book_2 = Book.objects.create(
+            name='Python cookbook',
+            edition=2,
+            publication_year=2016,
+         )
+
+         book_2.authors.add(Author.objects.create(name='David Beazley'))
+
+   - para quebrar o teste alteramos -> queryset = queryset.filter(publication_year=2023)
+   - refaturamos um expressão para usar o operator walrus
+   - [walrus_operator](https://realpython.com/python-walrus-operator/)
+
+
+#### Test filtro pelo author
+
+
+
+#### Test filtro pelo author e pelo ano de publicação
+   - filtrar pelo author 
+   - filtrar pelo ano de publicação
+
+
+
+#### HATEOAS (Hypermedia as the Engine of Application State)
+   - [Entendendo HATEOAS](https://www.erudio.com.br/blog/o-que-e-hateoas/)
+   - [Content type](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Headers/Content-Type)
+   - [Django Rest Framework](https://www.django-rest-framework.org/api-guide/generic-views/)
+
+#### Falta Validar as informação 
+   - formulário - validação do payload de dados
+   - cache http  - leitura dos livros e autores
+     implementa com um correta formatação dos headers
