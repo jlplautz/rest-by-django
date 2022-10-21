@@ -28,6 +28,9 @@ class Book(models.Model):
     # um livro não pode existir se não ter um autor portanto blank=False
     authors = models.ManyToManyField(Author, related_name='books')
 
+    class Meta:
+        ordering = ('name',)
+
     def __str__(self):
         return self.name
 

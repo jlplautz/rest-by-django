@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 import pytest
-
 from django.shortcuts import resolve_url
 from pyprg.core.models import Author, Book
 
@@ -90,14 +89,6 @@ def test_create_book(client):
 
 
 def test_read_book(client, book):
-    # author = Author.objects.create(name='Luciano Ramalho')
-    # book = Book.objects.create(
-    #     name='Python Fluente',
-    #     edition=2,
-    #     publication_year=2022
-    # )
-    # book.authors.set([author])
-
     response = client.get(f'/api/books/{book.id}/')
 
     assert response.status_code == HTTPStatus.OK
@@ -166,4 +157,52 @@ def test_list_books(client, book):
     response = client.get('/api/books/')
 
     assert response.status_code == HTTPStatus.OK
-    assert response.json() == [book.to_dict()]
+    assert response.json()['data'] == [book.to_dict()]
+
+
+def test_filter_book_by_publication_year(client, book):
+    book_2 = Book.objects.create(
+        name='Python cookbook',
+        edition=2,
+        publication_year=2016,
+    )
+
+    book_2.authors.add(Author.objects.create(name='David Beazley'))
+
+    response = client.get('/api/books/', data={'publication_year': book.publication_year})
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.json()['data'] == [book.to_dict()]
+
+
+def test_filter_book_by_author(client, book):
+    author = Author.objects.create(name='David Beazley')
+    book_2 = Book.objects.create(
+        name='Python cookbook',
+        edition=2,
+        publication_year=2016,
+    )
+
+    book_2.authors.add(author)
+
+    response = client.get('/api/books/', data={'author': author.id})
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.json()['data'] == [book_2.to_dict()]
+
+
+def test_filter_book_by_author_and_publication_year(client, book):
+    author = Author.objects.create(name='David Beazley')
+    book_2 = Book.objects.create(
+        name='Python Cookbook',
+        edition=2,
+        publication_year=2016,
+    )
+    book_2.authors.add(author)
+
+    response = client.get(
+        '/api/books/', data={'author': author.id, 'publication_year': 2016})
+
+    assert response.status_code == HTTPStatus.OK
+    # assert response.json()['data'] == [book_2.to_dict(), book.to_dict()]
+    assert response.json()['data'] == [book_2.to_dict()]
